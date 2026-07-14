@@ -1,0 +1,131 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chamssou Harouna Mounkaila - Site Personnel</title>
+    <style>
+        :root {
+            --primary: #1e293b;
+            --accent: #2563eb;
+            --text: #334155;
+            --bg: #f8fafc;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, var(--primary), #0f172a);
+            color: white;
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: -0.05em;
+        }
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin: 0.5rem 0 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: -2rem auto 3rem;
+            padding: 0 1rem;
+        }
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .info-item strong {
+            color: var(--primary);
+        }
+        .btn {
+            display: inline-block;
+            background-color: #25d366; /* Couleur WhatsApp */
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background-color: #128c7e;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Chamssou Harouna Mounkaila</h1>
+        <p>Élève en Terminale D | Passionné de Technologie & d'IA</p>
+    </header>
+
+    <div class="container">
+        <!-- Informations Personnelles -->
+        <div class="card">
+            <h2>Informations Personnelles 📋</h2>
+            <div class="info-grid">
+                <div class="info-item"><strong>Date de naissance :</strong> 1er Janvier 2004</div>
+                <div class="info-item"><strong>Lieu de naissance :</strong> Louma</div>
+                <div class="info-item"><strong>Résidence actuelle :</strong> Niamey, Niger</div>
+                <div class="info-item"><strong>Classe :</strong> Terminale D</div>
+            </div>
+        </div>
+
+        <!-- Expérience Professionnelle -->
+        <div class="card">
+            <h2>Expérience Professionnelle 💼</h2>
+            <h3>Employé chez Alfounti Service</h3>
+            <p style="font-style: italic; color: #64748b;">Commerce Général, Transports Logistique, Vente de matériels informatiques, d'engrais naturels, d'insecticides et prestations de services.</p>
+            <p><strong>Détails de l'entreprise :</strong></p>
+            <ul>
+                <li>Quartier Francophonie, Niamey, Niger</li>
+                <li>NIF : 66790 | Tél : +227 90 42 42 42</li>
+            </ul>
+        </div>
+
+        <!-- Contact direct -->
+        <div class="card" style="text-align: center;">
+            <h2>Me Contacter 📞</h2>
+            <p>Besoin de me joindre pour un projet ou une opportunité ?</p>
+            <p><strong>Téléphone :</strong> +227 84 53 03 35</p>
+            <a href="https://wa.me/22788277050" target="_blank" class="btn">Discuter sur WhatsApp 💬</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Chamssou Harouna Mounkaila. Tous droits réservés.</p>
+    </footer>
+
+</body>
+</html>
