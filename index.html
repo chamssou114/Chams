@@ -1,4 +1,4 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -20,10 +20,26 @@
             line-height: 1.6;
         }
         header {
+            position: relative;
             background: linear-gradient(135deg, var(--primary), #0f172a);
             color: white;
             text-align: center;
-            padding: 4rem 1rem;
+            padding: 5rem 1rem;
+            overflow: hidden;
+        }
+        /* Style pour le canvas 3D */
+        #canvas-3d {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        header .content {
+            position: relative;
+            z-index: 2;
         }
         header h1 {
             margin: 0;
@@ -39,6 +55,8 @@
             max-width: 800px;
             margin: -2rem auto 3rem;
             padding: 0 1rem;
+            position: relative;
+            z-index: 3;
         }
         .card {
             background: white;
@@ -46,6 +64,12 @@
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        /* Effet de survol 3D sur les cartes */
+        .card:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
         h2 {
             color: var(--primary);
@@ -63,7 +87,7 @@
         }
         .btn {
             display: inline-block;
-            background-color: #25d366; /* Couleur WhatsApp */
+            background-color: #25d366;
             color: white;
             text-decoration: none;
             padding: 0.75rem 1.5rem;
@@ -81,17 +105,25 @@
             color: #64748b;
             font-size: 0.9rem;
         }
+        @media (max-width: 600px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Chamssou Harouna Mounkaila</h1>
-        <p>Élève en Terminale D | Passionné de Technologie & d'IA</p>
+    <header id="header">
+        <!-- Zone de rendu 3D -->
+        <canvas id="canvas-3d"></canvas>
+        <div class="content">
+            <h1>Chamssou Harouna Mounkaila</h1>
+            <p>Élève en Terminale D | Passionné de Technologie & d'IA</p>
+        </div>
     </header>
 
     <div class="container">
-        <!-- Informations Personnelles -->
         <div class="card">
             <h2>Informations Personnelles 📋</h2>
             <div class="info-grid">
@@ -102,7 +134,6 @@
             </div>
         </div>
 
-        <!-- Expérience Professionnelle -->
         <div class="card">
             <h2>Expérience Professionnelle 💼</h2>
             <h3>Employé chez Alfounti Service</h3>
@@ -114,7 +145,6 @@
             </ul>
         </div>
 
-        <!-- Contact direct -->
         <div class="card" style="text-align: center;">
             <h2>Me Contacter 📞</h2>
             <p>Besoin de me joindre pour un projet ou une opportunité ?</p>
@@ -127,5 +157,97 @@
         <p>© 2026 Chamssou Harouna Mounkaila. Tous droits réservés.</p>
     </footer>
 
+    <!-- Script pour l'effet de particules 3D interactives -->
+    <script>
+        const canvas = document.getElementById('canvas-3d');
+        const ctx = canvas.getContext('2d');
+        const header = document.getElementById('header');
+
+        let width = canvas.width = header.offsetWidth;
+        let height = canvas.height = header.offsetHeight;
+
+        const particles = [];
+        const properties = {
+            bgColor: 'rgba(30, 41, 59, 1)',
+            particleColor: 'rgba(255, 255, 255, 0.5)',
+            particleRadius: 3,
+            particleCount: 60,
+            maxVelocity: 0.5,
+            lineLength: 150,
+        };
+
+        window.onresize = function() {
+            width = canvas.width = header.offsetWidth;
+            height = canvas.height = header.offsetHeight;
+        };
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.z = Math.random() * 2 + 0.5; // Profondeur 3D simulée
+                this.velocityX = (Math.random() * 2 - 1) * properties.maxVelocity * this.z;
+                this.velocityY = (Math.random() * 2 - 1) * properties.maxVelocity * this.z;
+            }
+
+            position() {
+                this.x += this.velocityX;
+                this.y += this.velocityY;
+
+                if (this.x > width || this.x < 0) this.velocityX *= -1;
+                if (this.y > height || this.y < 0) this.velocityY *= -1;
+            }
+
+            reDraw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, properties.particleRadius * this.z, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fillStyle = properties.particleColor;
+                ctx.fill();
+            }
+        }
+
+        function drawLines() {
+            let x1, y1, x2, y2, length, opacity;
+            for (let i in particles) {
+                for (let j in particles) {
+                    x1 = particles[i].x;
+                    y1 = particles[i].y;
+                    x2 = particles[j].x;
+                    y2 = particles[j].y;
+                    length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                    if (length < properties.lineLength) {
+                        opacity = 1 - length / properties.lineLength;
+                        ctx.lineWidth = '0.5';
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.2})`;
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.closePath();
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function init() {
+            for (let i = 0; i < properties.particleCount; i++) {
+                particles.push(new Particle());
+            }
+            loop();
+        }
+
+        function loop() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i in particles) {
+                particles[i].position();
+                particles[i].reDraw();
+            }
+            drawLines();
+            requestAnimationFrame(loop);
+        }
+
+        init();
+    </script>
 </body>
 </html>
